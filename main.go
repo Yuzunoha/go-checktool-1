@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	sub2();
+	sub2("https://markdown.yuzunoha.net/api/go");
 }
 
 func sub1() {
@@ -23,8 +23,7 @@ func sub1() {
 	fmt.Println(string(byteArray)) // htmlをstringで取得
 }
 
-func sub2() {
-    // POSTメソッド
+func sub2(argUrlStr string) {
     // url.Values{}でPOSTで送信する入れ物を準備
     ps := url.Values{}
 
@@ -36,7 +35,7 @@ func sub2() {
     fmt.Println(ps.Encode())
 
     // http.PostForm()でPOSTメソッドを発行
-    res, err := http.PostForm("https://markdown.yuzunoha.net/api/go", ps)
+    res, err := http.PostForm(argUrlStr, ps)
 
     if err != nil {
         log.Fatal(err)
@@ -44,8 +43,10 @@ func sub2() {
 
     // deferでクローズ処理
     defer res.Body.Close()
-    // Bodyの内容を読み込む
+    
+	// Bodyの内容を読み込む
     body, _ := io.ReadAll(res.Body)
-    // Bodyの内容を出力する
+    
+	// Bodyの内容を出力する
     fmt.Print(string(body))
 }
