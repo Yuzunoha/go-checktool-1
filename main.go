@@ -7,10 +7,15 @@ import (
   "io/ioutil"
   "log"
   "io"
+  "os"
 )
 
 func main() {
-	sub2("https://markdown.yuzunoha.net/api/go");
+	// カレントディレクトリを取得する
+	p, _ := os.Getwd()
+    status, content := SendPostRequest("https://markdown.yuzunoha.net/api/go", p + "/test.txt")
+    fmt.Println(status)
+    fmt.Println(string(content))
 }
 
 func sub1() {
@@ -50,3 +55,30 @@ func sub2(argUrlStr string) {
 	// Bodyの内容を出力する
     fmt.Print(string(body))
 }
+
+func SendPostRequest(url string, filename string) (string, []byte) {
+    client := &http.Client{}
+    data, err := os.Open(filename)
+    if err != nil {
+        log.Fatal(err)
+    }
+    req, err := http.NewRequest("POST", url, data)
+    if err != nil {
+        log.Fatal(err)
+    }
+    resp, err := client.Do(req)
+    if err != nil {
+        log.Fatal(err)
+    }
+    content, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+    return resp.Status, content
+}
+
+// func main() {
+//    status, content := SendPostRequest("https://api.example.com/upload", "test.jpg")
+//    fmt.Println(status)
+//    fmt.Println(string(content))
+// }
