@@ -21,7 +21,7 @@ func main() {
 	// カレントディレクトリのtest.txtファイルのフルパス
 	var filePath = p + "/test.txt"
 	// リクエスト発行
-	var content = SendPostRequest(toUrlStr, filePath, "multipart/form-data");
+	var content = SendPostRequest(toUrlStr, filePath, "file");
 	// 結果表示
     fmt.Println(string(content))
 }
