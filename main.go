@@ -8,14 +8,66 @@ import (
   "log"
   "io"
   "os"
+  "bytes"
+  "mime/multipart"
+  "path/filepath"    
 )
 
 func main() {
+	// 送信先のurl
+	var toUrlStr = "https://markdown.yuzunoha.net/api/go"
 	// カレントディレクトリを取得する
 	p, _ := os.Getwd()
-    status, content := SendPostRequest("https://markdown.yuzunoha.net/api/go", p + "/test.txt")
-    fmt.Println(status)
-    fmt.Println(string(content))
+	// カレントディレクトリのtest.txtファイルのフルパス
+	var filePath = p + "/test.txt"
+	// リクエスト発行
+	var content = SendPostRequest(toUrlStr, filePath, "multipart/form-data");
+	// 結果表示
+    fmt.Println(content)
+}
+
+func SendPostRequest (url string, filename string, filetype string) []byte {
+    file, err := os.Open(filename)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer file.Close()
+
+
+    body := &bytes.Buffer{}
+    writer := multipart.NewWriter(body)
+    part, err := writer.CreateFormFile(filetype, filepath.Base(file.Name()))
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    io.Copy(part, file)
+    writer.Close()
+    request, err := http.NewRequest("POST", url, body)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    request.Header.Add("Content-Type", writer.FormDataContentType())
+    client := &http.Client{}
+
+    response, err := client.Do(request)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer response.Body.Close()
+
+    content, err := ioutil.ReadAll(response.Body)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    return content
 }
 
 func sub1() {
@@ -56,7 +108,7 @@ func sub2(argUrlStr string) {
     fmt.Print(string(body))
 }
 
-func SendPostRequest(url string, filename string) (string, []byte) {
+func SendPostRequestOld(url string, filename string) (string, []byte) {
     client := &http.Client{}
     data, err := os.Open(filename)
     if err != nil {
