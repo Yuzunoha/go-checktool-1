@@ -23,7 +23,7 @@ func main() {
 	// リクエスト発行
 	var content = SendPostRequest(toUrlStr, filePath, "multipart/form-data");
 	// 結果表示
-    fmt.Println(content)
+    fmt.Println(string(content))
 }
 
 func SendPostRequest (url string, filename string, filetype string) []byte {
