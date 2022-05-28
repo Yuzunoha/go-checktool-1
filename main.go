@@ -25,7 +25,7 @@ func main() {
     fmt.Println(string(content))
 }
 
-func SendPostRequest (url string, filename string, filetype string) []byte {
+func SendPostRequest (url string, filename string, fieldName string) []byte {
     file, err := os.Open(filename)
 
     if err != nil {
@@ -36,7 +36,7 @@ func SendPostRequest (url string, filename string, filetype string) []byte {
 
     body := &bytes.Buffer{}
     writer := multipart.NewWriter(body)
-    part, err := writer.CreateFormFile(filetype, filepath.Base(file.Name()))
+    part, err := writer.CreateFormFile(fieldName, filepath.Base(file.Name()))
 
     if err != nil {
         log.Fatal(err)
@@ -69,16 +69,6 @@ func SendPostRequest (url string, filename string, filetype string) []byte {
     return content
 }
 
-func sub1() {
-	url := "https://markdown.yuzunoha.net/go"
-
-	resp, _ := http.Get(url)
-	defer resp.Body.Close()
-  
-	byteArray, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(byteArray)) // htmlをstringで取得
-}
-
 func SendPostRequestOld(url string, filename string) (string, []byte) {
     client := &http.Client{}
     data, err := os.Open(filename)
@@ -99,9 +89,3 @@ func SendPostRequestOld(url string, filename string) (string, []byte) {
     }
     return resp.Status, content
 }
-
-// func main() {
-//    status, content := SendPostRequest("https://api.example.com/upload", "test.jpg")
-//    fmt.Println(status)
-//    fmt.Println(string(content))
-// }
