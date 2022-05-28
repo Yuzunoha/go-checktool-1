@@ -25,16 +25,15 @@ func main() {
     fmt.Println(string(content))
 }
 
-func SendPostRequest (url string, filename string, fieldName string) []byte {
-    file, err := os.Open(filename)
+func SendPostRequest (url string, filePath string, fieldName string) []byte {
+    file, err := os.Open(filePath)
 
     if err != nil {
         log.Fatal(err)
     }
     defer file.Close()
 
-
-    body := &bytes.Buffer{}
+	body := &bytes.Buffer{}
     writer := multipart.NewWriter(body)
     part, err := writer.CreateFormFile(fieldName, filepath.Base(file.Name()))
 
@@ -67,25 +66,4 @@ func SendPostRequest (url string, filename string, fieldName string) []byte {
     }
 
     return content
-}
-
-func SendPostRequestOld(url string, filename string) (string, []byte) {
-    client := &http.Client{}
-    data, err := os.Open(filename)
-    if err != nil {
-        log.Fatal(err)
-    }
-    req, err := http.NewRequest("POST", url, data)
-    if err != nil {
-        log.Fatal(err)
-    }
-    resp, err := client.Do(req)
-    if err != nil {
-        log.Fatal(err)
-    }
-    content, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-    return resp.Status, content
 }
