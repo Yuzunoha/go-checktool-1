@@ -46,6 +46,8 @@ func SendPostRequest (url string, filePath string, fieldName string) []byte {
     }
     // フォームに送信するファイルの中身をコピーする
     io.Copy(part, file)
+    // postのキーバリューを乗せられる
+    writer.WriteField("a", "b")
     // MultipartWriterを閉じる
     writer.Close()
     // リクエストを作成する。ペイロードはバッファ領域へのポインタ「body」を指定することに注意
