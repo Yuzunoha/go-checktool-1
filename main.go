@@ -99,7 +99,7 @@ func submit(taskKey string) {
 		return
 	}
 	// 送信先のurl
-	toUrlStr := "http://localhost/api/go"
+	toUrlStr := "http://localhost/api/go/unittest"
 	// リクエスト発行
 	content := SendPostRequest(toUrlStr, token, filePath, taskKey)
 	// 結果表示
