@@ -85,8 +85,10 @@ func submit(taskKey string) {
 	}
 	// 送信先のurl
 	toUrlStr := "http://localhost/api/go"
+	// TODO: token
+	token := "8|M9MkLyUztaW0EgaWPwaymOOS1UuJO4wXTlzGPMOZ"
 	// リクエスト発行
-	content := SendPostRequest(toUrlStr, filePath, "file")
+	content := SendPostRequest(toUrlStr, token, filePath, taskKey)
 	// 結果表示
 	p(string(content))
 }
@@ -101,7 +103,7 @@ func contains(a []string, e string) bool {
 	return false
 }
 
-func SendPostRequest(url string, filePath string, fieldName string) []byte {
+func SendPostRequest(url string, token string, filePath string, taskKey string) []byte {
 	// フルパス指定で送信するファイルを開く
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -110,17 +112,17 @@ func SendPostRequest(url string, filePath string, fieldName string) []byte {
 	defer file.Close()
 	// 送信のためのバッファ領域を確保する
 	body := &bytes.Buffer{}
-	// MultipartWriterを作る。boundaryは自動で設定される。
+	// MultipartWriterを作る。boundaryは自動で設定される
 	writer := multipart.NewWriter(body)
 	// フォームを作る。右辺の引数はそれぞれ "file", "test.txt"
-	part, err := writer.CreateFormFile(fieldName, filepath.Base(file.Name()))
+	part, err := writer.CreateFormFile("file", filepath.Base(file.Name()))
 	if err != nil {
 		log.Fatal(err)
 	}
 	// フォームに送信するファイルの中身をコピーする
 	io.Copy(part, file)
-	// postのキーバリューを乗せられる
-	writer.WriteField("a", "b")
+	// postのキーバリュー。"fizzbuzz", "warikan", ...
+	writer.WriteField("taskKey", taskKey)
 	// MultipartWriterを閉じる
 	writer.Close()
 	// リクエストを作成する。ペイロードはバッファ領域へのポインタ「body」を指定することに注意
@@ -128,8 +130,10 @@ func SendPostRequest(url string, filePath string, fieldName string) []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// リクエストヘッダを書き込む。値は "multipart/form-data; boundary=aab16..."
+	// "multipart/form-data; boundary=aab16..."
 	request.Header.Add("Content-Type", writer.FormDataContentType())
+	// "Bearer 8|M9MkLyUztaW0EgaWPwaymOOS1UuJO4wXTlzGPMOZ"
+	request.Header.Add("Authorization", "Bearer " + token)
 	// クライアントのポインタを取得する
 	client := &http.Client{}
 	// リクエストを実行してレスポンスを受け取る
