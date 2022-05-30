@@ -16,16 +16,26 @@ import (
 var p = fmt.Println
 
 func main() {
-	// コマンドライン引数をパースする
+	// コマンドライン引数をパースして取得する
 	flag.Parse()
+	args := flag.Args()
+	// ガード: コマンドライン引数1の存在チェック
+	if (len(args) <= 0) {
+		p("引数を指定してください")
+		p("ex:")
+		p("  codegym test")
+		p("  codegym submit fizzbuzz")
+		return
+	}
 	// コマンドライン引数1: "check", "submit", ...
 	arg1 := flag.Args()[0]
-	// arg2 := flag.Args()[1]
 	switch arg1 {
 	case "test":
 		test()
 	case "submit":
-		// TODO
+		// コマンドライン引数2: "fizzbuzz", "fukuri", ...
+		arg2 := flag.Args()[1]
+		submit(arg2)
 	}
 }
 
@@ -34,7 +44,8 @@ func test() {
 	p("テスト")
 }
 
-func submit() {
+func submit(taskKey string) {
+	p(taskKey)
 	// 送信先のurl
 	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
 	var toUrlStr = "http://localhost/api/go"
