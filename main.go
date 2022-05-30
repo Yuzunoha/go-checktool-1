@@ -83,19 +83,12 @@ func submit(taskKey string) {
 		p("カレントディレクトリに次のファイルが存在しません: " + fileName)
 		return
 	}
-	p(fileName)
-	return
 	// 送信先のurl
-	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
-	// var toUrlStr = "http://localhost/api/go"
-	// カレントディレクトリを取得する
-	//path, _ := os.Getwd()
-	// カレントディレクトリのtest.txtファイルのフルパス
-	// var filePath = path + "/test.txt"
+	toUrlStr := "http://localhost/api/go"
 	// リクエスト発行
-	//var content = SendPostRequest(toUrlStr, filePath, "file")
+	content := SendPostRequest(toUrlStr, filePath, "file")
 	// 結果表示
-	//p(string(content))
+	p(string(content))
 }
 
 // 配列aに要素eが含まれていればtrueを返す関数
