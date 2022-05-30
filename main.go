@@ -19,6 +19,7 @@ func main() {
 	// コマンドライン引数をパースして取得する
 	flag.Parse()
 	args := flag.Args()
+
 	// ガード: コマンドライン引数1の存在チェック("check", "submit", ...)
 	if len(args) <= 0 {
 		p("コマンドライン引数を指定してください")
@@ -27,6 +28,7 @@ func main() {
 		p("  codegym submit fizzbuzz")
 		return
 	}
+
 	// コマンドライン引数1で分岐する
 	switch args[0] {
 	case "test":
@@ -51,6 +53,12 @@ func test() {
 }
 
 func submit(taskKey string) {
+	// 有効なタスクキー一覧
+	taskKeys := []string{"fizzbuzz"}
+	if false == contains(taskKeys, taskKey) {
+		p("存在しないオプションです: " + taskKey)
+		return
+	}
 	p(taskKey)
 	return
 	// 送信先のurl
@@ -64,6 +72,16 @@ func submit(taskKey string) {
 	var content = SendPostRequest(toUrlStr, filePath, "file")
 	// 結果表示
 	p(string(content))
+}
+
+// 配列aに要素eが含まれていればtrueを返す関数
+func contains(a []string, e string) bool {
+	for _, v := range a {
+		if e == v {
+			return true
+		}
+	}
+	return false
 }
 
 func SendPostRequest(url string, filePath string, fieldName string) []byte {
