@@ -64,7 +64,21 @@ func isExist(filePath string) bool {
 	return err == nil
 }
 
+// 環境変数 CODEGYM_TOKEN が無ければ終了させる関数
+func checkEnvCodegymToken() {
+	s := os.Getenv("CODEGYM_TOKEN")
+	if "" == s {
+		p("環境変数 CODEGYM_TOKEN を設定してください。次のようなコマンドで設定します")
+		p("  export CODEGYM_TOKEN=\"8|M9MkLyUztaW0EgaWPwaymOOS1UuJO4wXTlzGPMOZ\"")
+		p("  右辺の値はポータルサイトから取得した値に置き換えてください")
+		p("  先頭の数字部分 8| も必要なことに注意してください")
+		os.Exit(0)
+	}
+}
+
 func submit(taskKey string) {
+	// ガード: 環境変数があるかどうか
+	checkEnvCodegymToken()
 	// 有効なタスクキー一覧
 	taskKeys := []string{"fizzbuzz", "fukuri"}
 	// ガード: 有効なタスクキーかどうか
