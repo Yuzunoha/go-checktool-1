@@ -33,7 +33,7 @@ func main() {
 		test()
 	case "submit":
 		// ガード: コマンドライン引数2の存在チェック("fizzbuzz", "fukuri", ...)
-		if len(args) <= 2 {
+		if len(args) <= 1 {
 			p("2つ目のコマンドライン引数を指定してください")
 			p("ex:")
 			p("  codegym submit fizzbuzz")
@@ -52,6 +52,7 @@ func test() {
 
 func submit(taskKey string) {
 	p(taskKey)
+	return
 	// 送信先のurl
 	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
 	var toUrlStr = "http://localhost/api/go"
