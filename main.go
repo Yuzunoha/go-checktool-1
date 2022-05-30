@@ -146,7 +146,7 @@ func SendPostRequest(url string, token string, filePath string, taskKey string) 
 	// "multipart/form-data; boundary=aab16..."
 	request.Header.Add("Content-Type", writer.FormDataContentType())
 	// "Bearer 8|M9MkLyUztaW0EgaWPwaymOOS1UuJO4wXTlzGPMOZ"
-	request.Header.Add("Authorization", "Bearer " + token)
+	request.Header.Add("Authorization", "Bearer "+token)
 	// クライアントのポインタを取得する
 	client := &http.Client{}
 	// リクエストを実行してレスポンスを受け取る
