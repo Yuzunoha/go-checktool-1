@@ -74,15 +74,16 @@ func submit(taskKey string) {
 	}
 	// カレントディレクトリを取得する(goの実行ファイルの場所ではない。実行した場所である)
 	currentDir, _ := os.Getwd()
+	// 送信対象ファイル名(ファイル名はタスクキーと同一)
+	fileName := taskKey + ".php"
 	// 送信対象ファイルのフルパス
-	filePath := currentDir + "/" + taskKey + ".php"
-
+	filePath := currentDir + "/" + fileName
 	// ガード: タスクキーに該当するphpファイルが同じディレクトリに存在すること
-	if (true) {
-		p("カレントディレクトリに次のファイルが存在しません: " + filePath)
+	if false == isExist(filePath) {
+		p("カレントディレクトリに次のファイルが存在しません: " + fileName)
 		return
 	}
-	// p(filename)
+	p(fileName)
 	return
 	// 送信先のurl
 	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
