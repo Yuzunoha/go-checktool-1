@@ -49,7 +49,19 @@ func main() {
 }
 
 func test() {
-	p("テスト")
+	// カレントディレクトリを取得する(goの実行ファイルの場所ではない。実行した場所である)
+	currentDir, _ := os.Getwd()
+	filePath := currentDir + "/" + "main.go"
+	if isExist(filePath) {
+		fmt.Println("存在します")
+	} else {
+		fmt.Println("存在しません")
+	}
+}
+
+func isExist(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return err == nil
 }
 
 func submit(taskKey string) {
@@ -60,26 +72,29 @@ func submit(taskKey string) {
 		p("存在しないオプションです: " + taskKey)
 		return
 	}
-	// 送信対象のファイル名
-	filename := taskKey + ".php";
+	// カレントディレクトリを取得する(goの実行ファイルの場所ではない。実行した場所である)
+	currentDir, _ := os.Getwd()
+	// 送信対象ファイルのフルパス
+	filePath := currentDir + "/" + taskKey + ".php"
+
 	// ガード: タスクキーに該当するphpファイルが同じディレクトリに存在すること
 	if (true) {
-		p("カレントディレクトリに次のファイルが存在しません: " + filename)
+		p("カレントディレクトリに次のファイルが存在しません: " + filePath)
 		return
 	}
-	p(filename)
+	// p(filename)
 	return
 	// 送信先のurl
 	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
-	var toUrlStr = "http://localhost/api/go"
+	// var toUrlStr = "http://localhost/api/go"
 	// カレントディレクトリを取得する
-	path, _ := os.Getwd()
+	//path, _ := os.Getwd()
 	// カレントディレクトリのtest.txtファイルのフルパス
-	var filePath = path + "/test.txt"
+	// var filePath = path + "/test.txt"
 	// リクエスト発行
-	var content = SendPostRequest(toUrlStr, filePath, "file")
+	//var content = SendPostRequest(toUrlStr, filePath, "file")
 	// 結果表示
-	p(string(content))
+	//p(string(content))
 }
 
 // 配列aに要素eが含まれていればtrueを返す関数
