@@ -65,7 +65,7 @@ func isExist(filePath string) bool {
 }
 
 // 環境変数 CODEGYM_TOKEN が無ければ終了させる関数
-func checkEnvCodegymToken() {
+func getEnvCodegymToken() string {
 	s := os.Getenv("CODEGYM_TOKEN")
 	if "" == s {
 		p("環境変数 CODEGYM_TOKEN を設定してください。次のようなコマンドで設定します")
@@ -74,11 +74,12 @@ func checkEnvCodegymToken() {
 		p("  先頭の数字部分 8| も必要なことに注意してください")
 		os.Exit(0)
 	}
+	return s
 }
 
 func submit(taskKey string) {
-	// ガード: 環境変数があるかどうか
-	checkEnvCodegymToken()
+	// ガード: 環境変数を取得する。無ければ強制終了する
+	token := getEnvCodegymToken()
 	// 有効なタスクキー一覧
 	taskKeys := []string{"fizzbuzz", "fukuri"}
 	// ガード: 有効なタスクキーかどうか
@@ -99,8 +100,6 @@ func submit(taskKey string) {
 	}
 	// 送信先のurl
 	toUrlStr := "http://localhost/api/go"
-	// TODO: token
-	token := "8|M9MkLyUztaW0EgaWPwaymOOS1UuJO4wXTlzGPMOZ"
 	// リクエスト発行
 	content := SendPostRequest(toUrlStr, token, filePath, taskKey)
 	// 結果表示
