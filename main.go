@@ -19,28 +19,34 @@ func main() {
 	// コマンドライン引数をパースして取得する
 	flag.Parse()
 	args := flag.Args()
-	// ガード: コマンドライン引数1の存在チェック
-	if (len(args) <= 0) {
-		p("引数を指定してください")
+	// ガード: コマンドライン引数1の存在チェック("check", "submit", ...)
+	if len(args) <= 0 {
+		p("コマンドライン引数を指定してください")
 		p("ex:")
 		p("  codegym test")
 		p("  codegym submit fizzbuzz")
 		return
 	}
-	// コマンドライン引数1: "check", "submit", ...
-	arg1 := flag.Args()[0]
-	switch arg1 {
+	// コマンドライン引数1で分岐する
+	switch args[0] {
 	case "test":
 		test()
 	case "submit":
-		// コマンドライン引数2: "fizzbuzz", "fukuri", ...
-		arg2 := flag.Args()[1]
-		submit(arg2)
+		// ガード: コマンドライン引数1の存在チェック("fizzbuzz", "fukuri", ...)
+		if len(args) <= 2 {
+			p("2つ目のコマンドライン引数を指定してください")
+			p("ex:")
+			p("  codegym submit fizzbuzz")
+			p("  codegym submit fukuri")
+			return
+		}
+		submit(args[1])
+	default:
+		p("存在しないオプションです: " + args[0])
 	}
 }
 
 func test() {
-
 	p("テスト")
 }
 
