@@ -54,12 +54,20 @@ func test() {
 
 func submit(taskKey string) {
 	// 有効なタスクキー一覧
-	taskKeys := []string{"fizzbuzz"}
+	taskKeys := []string{"fizzbuzz", "fukuri"}
+	// ガード: 有効なタスクキーかどうか
 	if false == contains(taskKeys, taskKey) {
 		p("存在しないオプションです: " + taskKey)
 		return
 	}
-	p(taskKey)
+	// 送信対象のファイル名
+	filename := taskKey + ".php";
+	// ガード: タスクキーに該当するphpファイルが同じディレクトリに存在すること
+	if (true) {
+		p("カレントディレクトリに次のファイルが存在しません: " + filename)
+		return
+	}
+	p(filename)
 	return
 	// 送信先のurl
 	// var toUrlStr = "https://markdown.yuzunoha.net/api/go"
