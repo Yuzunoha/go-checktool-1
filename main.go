@@ -32,7 +32,7 @@ func main() {
 	case "test":
 		test()
 	case "submit":
-		// ガード: コマンドライン引数1の存在チェック("fizzbuzz", "fukuri", ...)
+		// ガード: コマンドライン引数2の存在チェック("fizzbuzz", "fukuri", ...)
 		if len(args) <= 2 {
 			p("2つ目のコマンドライン引数を指定してください")
 			p("ex:")
