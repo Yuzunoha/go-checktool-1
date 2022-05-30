@@ -10,25 +10,36 @@ import (
   "bytes"
   "mime/multipart"
   "path/filepath"
+  "flag"
 )
 
 var p = fmt.Println
 
 func main() {
+	test()
+}
+
+func test() {
+	flag.Parse()
+	p("テスト")
+    p(flag.Args())
+}
+
+func submit() {
     // 送信先のurl
     // var toUrlStr = "https://markdown.yuzunoha.net/api/go"
     var toUrlStr = "http://localhost/api/go"
     // カレントディレクトリを取得する
-    p, _ := os.Getwd()
+    path, _ := os.Getwd()
     // カレントディレクトリのtest.txtファイルのフルパス
-    var filePath = p + "/test.txt"
+    var filePath = path + "/test.txt"
     // リクエスト発行
     var content = SendPostRequest(toUrlStr, filePath, "file");
     // 結果表示
-    fmt.Println(string(content))
+    p(string(content))
 }
 
-func SendPostRequest (url string, filePath string, fieldName string) []byte {
+func SendPostRequest(url string, filePath string, fieldName string) []byte {
     // フルパス指定で送信するファイルを開く
     file, err := os.Open(filePath)
     if err != nil {
