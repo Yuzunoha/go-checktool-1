@@ -81,7 +81,7 @@ func submit(taskKey string) {
 	// ガード: 環境変数を取得する。無ければ強制終了する
 	token := getEnvCodegymToken()
 	// 有効なタスクキー一覧
-	taskKeys := []string{"fizzbuzz", "fukuri"}
+	taskKeys := []string{"fizzbuzz", "kuku", "fukuri", "shiharai"}
 	// ガード: 有効なタスクキーかどうか
 	if false == contains(taskKeys, taskKey) {
 		p("存在しないオプションです: " + taskKey)
