@@ -103,9 +103,9 @@ func submit(taskKey string) {
 	}
 	// 送信先のurl
 	// クラウド
-	// toUrlStr := "https://markdown.yuzunoha.net/api/go/unittest"
+	toUrlStr := "https://markdown.yuzunoha.net/api/go/unittest"
 	// ローカル
-	toUrlStr := "http://localhost/api/go/unittest"
+	// toUrlStr := "http://localhost/api/go/unittest"
 	// リクエスト発行
 	content := SendPostRequest(toUrlStr, token, filePath, taskKey)
 	// 結果表示
