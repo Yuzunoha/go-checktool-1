@@ -18,19 +18,7 @@ import (
 
 var p = fmt.Println
 
-func test2() {
-
-	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
-	s.Start()                                                   // Start the spinner
-	time.Sleep(4 * time.Second)                                 // Run for some time to simulate work
-	s.Stop()
-
-}
-
 func main() {
-	test2()
-	os.Exit(0)
-
 	// コマンドライン引数をパースして取得する
 	flag.Parse()
 	args := flag.Args()
@@ -134,6 +122,12 @@ func contains(a []string, e string) bool {
 	return false
 }
 
+func createSpinner() *spinner.Spinner {
+	s := spinner.New(spinner.CharSets[1], 100*time.Millisecond) // Build our new spinner
+	s.Prefix = "確認中です。ピー、ガー、ヒョロロロー... "                         // Prefix text before the spinner
+	return s
+}
+
 func SendPostRequest(url string, token string, filePath string, taskKey string) []byte {
 	// フルパス指定で送信するファイルを開く
 	file, err := os.Open(filePath)
@@ -167,12 +161,21 @@ func SendPostRequest(url string, token string, filePath string, taskKey string) 
 	request.Header.Add("Authorization", "Bearer "+token)
 	// クライアントのポインタを取得する
 	client := &http.Client{}
+
+	// スピナー開始
+	spinner := createSpinner()
+	spinner.Start()
+
 	// リクエストを実行してレスポンスを受け取る
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer response.Body.Close()
+
+	// スピナー終了
+	spinner.Stop()
+
 	// レスポンスからコンテンツを抽出して返却する。おわり
 	content, err := ioutil.ReadAll(response.Body)
 	if err != nil {
