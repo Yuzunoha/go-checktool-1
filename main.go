@@ -11,11 +11,26 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/briandowns/spinner"
 )
 
 var p = fmt.Println
 
+func test2() {
+
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond) // Build our new spinner
+	s.Start()                                                   // Start the spinner
+	time.Sleep(4 * time.Second)                                 // Run for some time to simulate work
+	s.Stop()
+
+}
+
 func main() {
+	test2()
+	os.Exit(0)
+
 	// コマンドライン引数をパースして取得する
 	flag.Parse()
 	args := flag.Args()
